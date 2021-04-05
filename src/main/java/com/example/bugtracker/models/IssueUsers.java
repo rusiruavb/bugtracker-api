@@ -8,17 +8,15 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "issues")
-public class Issue {
+@Table(name = "issue_assign")
+public class IssueUsers {
     @Id
     @GeneratedValue
     private int id;
@@ -34,12 +32,15 @@ public class Issue {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt = new Date();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<IssueUsers> users = new ArrayList<>();
+    @Column(name = "user_name")
+    private String userName;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "created_user", referencedColumnName = "id")
-    private User issueCreatedUser;
+    @JoinColumn(name = "issue_id")
+    private Issue issue;
+
+    public IssueUsers(String userName) {
+        this.userName = userName;
+    }
 
     public int getId() {
         return id;
@@ -49,19 +50,43 @@ public class Issue {
         this.id = id;
     }
 
-    public List<IssueUsers> getUsers() {
-        return users;
+    public Date getCreatedAt() {
+        return createdAt;
     }
 
-    public void setUsers(List<IssueUsers> users) {
-        this.users = users;
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
-    public User getIssueCreatedUser() {
-        return issueCreatedUser;
+    public Date getUpdatedAt() {
+        return updatedAt;
     }
 
-    public void setIssueCreatedUser(User issueCreatedUser) {
-        this.issueCreatedUser = issueCreatedUser;
+    public void setUpdatedAt(Date updatedAt) {
+        this.updatedAt = updatedAt;
+    }
+
+    public Date getDeletedAt() {
+        return deletedAt;
+    }
+
+    public void setDeletedAt(Date deletedAt) {
+        this.deletedAt = deletedAt;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public Issue getIssue() {
+        return issue;
+    }
+
+    public void setIssue(Issue issue) {
+        this.issue = issue;
     }
 }
