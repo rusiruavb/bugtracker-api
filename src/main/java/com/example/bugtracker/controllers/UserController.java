@@ -3,11 +3,8 @@ package com.example.bugtracker.controllers;
 import com.example.bugtracker.models.User;
 import com.example.bugtracker.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,16 +13,12 @@ public class UserController {
     @Autowired
     private UserService service;
 
-    @PostMapping("/createuser")
+    @PostMapping("/user/create")
     public User createUser(@RequestBody User user) {
-        try {
-            return service.saveUser(user);
-        } catch (SQLIntegrityConstraintViolationException ex) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User Already Exists", ex);
-        }
+        return service.saveUser(user);
     }
 
-    @GetMapping("/getusers")
+    @GetMapping("/user/get")
     public List<User> getUsers() {
         List<User> userList = new ArrayList<>();
         for (User item: service.getUsers()) {
@@ -36,10 +29,18 @@ public class UserController {
         return userList;
     }
 
-    @GetMapping("/get/{id}")
+    @GetMapping("/user/get/{id}")
     public User getUser(@PathVariable  int id) {
         return service.getUserById(id);
     }
 
+    @PutMapping("/user/update")
+    public User updateUser(@RequestBody User user) {
+        return service.updateUser(user);
+    }
 
+    @DeleteMapping("/user/delete/{id}")
+    public String deleteUser(@PathVariable int id) {
+        return service.deleteUser(id);
+    }
 }
