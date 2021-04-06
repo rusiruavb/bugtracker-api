@@ -17,7 +17,7 @@ public class IssueService {
     public Issue createIssue(Issue issue) {
         for (ListIterator<IssueUsers> iterator = issue.getUsers().listIterator(); iterator.hasNext();) {
             IssueUsers issueUsers = iterator.next();
-            issue.getUsers().add(issueUsers); // issue here
+            issue.getUsers().add(issueUsers);
         }
 
 //        for (IssueUsers item: issue.getUsers()) {
