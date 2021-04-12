@@ -8,9 +8,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -33,13 +31,14 @@ public class Issue {
     @UpdateTimestamp
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
-    private Date deletedAt = new Date();
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private List<IssueUsers> users = new ArrayList<>();
+    private Date deletedAt = null;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "created_user", referencedColumnName = "id")
     private User issueCreatedUser;
+    @Column(name = "description", length = 2000)
+    private String description;
+    @Column(name = "tag")
+    private String tag;
 
     public int getId() {
         return id;
@@ -49,19 +48,27 @@ public class Issue {
         this.id = id;
     }
 
-    public List<IssueUsers> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<IssueUsers> users) {
-        this.users = users;
-    }
-
     public User getIssueCreatedUser() {
         return issueCreatedUser;
     }
 
     public void setIssueCreatedUser(User issueCreatedUser) {
         this.issueCreatedUser = issueCreatedUser;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

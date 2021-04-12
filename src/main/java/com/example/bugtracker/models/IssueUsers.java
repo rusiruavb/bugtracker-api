@@ -15,7 +15,7 @@ import java.util.Date;
 @NoArgsConstructor
 @Entity
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@Table(name = "issue_assign")
+@Table(name = "issue_users")
 public class IssueUsers {
     @Id
     @GeneratedValue
@@ -32,14 +32,19 @@ public class IssueUsers {
     @Column(name = "deleted_at")
     @Temporal(TemporalType.TIMESTAMP)
     private Date deletedAt = new Date();
-    @Column(name = "user_name")
-    private String userName;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private User assignUser;
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "issue_id")
     private Issue issue;
 
-    public IssueUsers(String userName) {
-        this.userName = userName;
+    public User getAssignUser() {
+        return assignUser;
+    }
+
+    public void setAssignUser(User assignUser) {
+        this.assignUser = assignUser;
     }
 
     public int getId() {
@@ -72,14 +77,6 @@ public class IssueUsers {
 
     public void setDeletedAt(Date deletedAt) {
         this.deletedAt = deletedAt;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
     }
 
     public Issue getIssue() {
